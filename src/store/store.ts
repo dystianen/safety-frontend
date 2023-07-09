@@ -14,7 +14,7 @@ export class Store {
     }
   }
 
-  hydrate = (data) => {
+  hydrate = (data: any) => {
     if (!data) return;
   };
 }

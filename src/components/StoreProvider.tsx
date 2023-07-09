@@ -1,11 +1,11 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext, ReactNode } from "react";
 import { Store } from "@/store/store";
 
-let store;
+let store: Store;
 
-export const StoreContext = createContext();
+export const StoreContext = createContext<Store | undefined>(undefined);
 
-export function useStore() {
+export function useStore(): Store {
   const context = useContext(StoreContext);
   if (context === undefined) {
     throw new Error("useStore must be used within StoreProvider");
@@ -14,7 +14,12 @@ export function useStore() {
   return context;
 }
 
-export function StoreProvider({ children, initialState: initialData }) {
+interface StoreProviderProps {
+  children: ReactNode;
+  initialState?: any;
+}
+
+export function StoreProvider({ children, initialState: initialData }: StoreProviderProps) {
   const store = initializeStore(initialData);
 
   return (
@@ -22,7 +27,7 @@ export function StoreProvider({ children, initialState: initialData }) {
   );
 }
 
-function initializeStore(initialData = null) {
+function initializeStore(initialData: any = null): Store {
   const _store = store ?? new Store();
 
   // If your page has Next.js data fetching methods that use a Mobx store, it will
